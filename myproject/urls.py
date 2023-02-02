@@ -22,5 +22,6 @@ urlpatterns = [
     path("form/", views.form_view, name='form_view'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
+    path('retrieve-user-info/<user_id>', views.retrieve_user_info, name='retrieve_user_info'),
     path('', views.login_view, name='login'),
 ]

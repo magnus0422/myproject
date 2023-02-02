@@ -16,4 +16,40 @@
   <button type="submit">Save</button>
     <a href="{% url 'logout' %}">Logout</a>
   {{ message|default:'' }}
+  <input type="hidden" value="{{ created_id }}" id="createdId"/>
+  <div class="user-div" id="userDiv" style="margin-top: 200px;">
+      <label for="created_username">Username: </label>
+      <input type="text" name="created_username" id="createdUsername" disabled>
+      <label for="created_email">Email: </label>
+      <input type="text" name="created_email" id="createdEmail" disabled>
+      <label for="created_phone_number">PhoneNumber: </label>
+      <input type="text" name="created_phone_number" id="createdPhoneNumber" disabled>
+  </div>
 </form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    const createdIdInput = document.getElementById("createdId")
+    const createdId = createdIdInput.value
+    const userDiv = document.getElementById("userDiv")
+    userDiv.hidden = true
+    if(createdId !== "") {
+        setTimeout(function () {
+            $.ajax({
+                url: `/retrieve-user-info/${createdId}`,
+                type: "GET",
+                success: function(data){
+                    if ("username" in data) {
+                        document.getElementById("createdUsername").value = data["username"]
+                        document.getElementById("createdEmail").value = data["email"]
+                        document.getElementById("createdPhoneNumber").value = data["phone_number"]
+                        userDiv.hidden = false
+                    }
+                },
+                error: function(error){
+                     console.log("Error:");
+                     console.log(error);
+                }
+            });
+        }, 1000)
+    }
+</script>
